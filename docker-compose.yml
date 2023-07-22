@@ -1,0 +1,56 @@
+version: "3.8"
+
+networks:
+  fpb-net:
+    driver: bridge
+
+volumes:
+  postgresql_data:
+    driver: local
+
+services:
+  db:
+    container_name: postgresql_db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - fpb-net
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+    ports:
+      - "5050:80"
+    depends_on:
+      - db
+    networks:
+      - fpb-net
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ".:/data/backend"
+    ports:
+      - "8000:8000"
+      - "5678:5678"
+    command: poetry run uvicorn app.main:app --host 0.0.0.0 --reload
+    restart: always
+    networks:
+      - fpb-net
+    depends_on:
+      - db
