@@ -1,7 +1,7 @@
 from sqlalchemy.orm import declarative_base, declared_attr
 
 
-class BaseModel:
+class Base:
     @declared_attr
     def __tablename__(cls) -> str:
         return cls.__name__.lower()
@@ -9,4 +9,4 @@ class BaseModel:
     __name__: str
 
 
-BaseModel = declarative_base(cls=BaseModel)
+Base = declarative_base(cls=Base)

@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+
+import debugpy
+from asgi_correlation_id import CorrelationIdMiddleware
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.exceptions import HTTPException, RequestValidationError
@@ -10,7 +13,6 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 from starlette.staticfiles import StaticFiles
-from asgi_correlation_id import CorrelationIdMiddleware
 
 from app.api.v1 import api_router
 from app.core.events import create_start_app_handler, create_stop_app_handler
@@ -21,8 +23,8 @@ from app.utils import (
     http_exception_handler,
     request_validation_exception_handler,
 )
-# import debugpy
-# debugpy.listen(('0.0.0.0', 5678))
+
+# debugpy.listen(("0.0.0.0", 5678))
 # debugpy.wait_for_client()
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,7 +38,7 @@ def create_app() -> FastAPI:
 
     _app.add_middleware(
         CORSMiddleware,
-        allow_origins=os.getenv("allowed_hosts", '*'),
+        allow_origins=os.getenv("allowed_hosts", "*"),
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
@@ -44,8 +46,7 @@ def create_app() -> FastAPI:
 
     _app.add_middleware(CorrelationIdMiddleware)
     _app.logger = CustomizeLogger.make_logger(config_path)
-    _app.include_router(api_router, prefix=os.getenv(
-        "api_v1_prefix", '/api/v1'))
+    _app.include_router(api_router, prefix=os.getenv("api_v1_prefix", "/api/v1"))
     _app.mount("/static", StaticFiles(directory="app/static"))
 
     @_app.get("/docs", include_in_schema=False)

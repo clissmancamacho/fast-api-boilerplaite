@@ -1,20 +1,12 @@
-# FastAPI boilerplate
-
-## Overview
-
-🚀 FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.6+ based on standard Python-type hints. \
-I made and used this boilerplate for projects that I'm working on. 🧑‍💻 \
-it was powerful for building data-driven applications using schema for data validation, serialization, and documentation. 📝
+# Bookairfreight Test
 
 ## Description
 
-A boilerplate that can serve as a base for FastAPI with PostgreSQL \
+This is the solution of Bookairfreight Test using FastAPI with PostgreSQL \
 Made with [FastAPI](https://fastapi.tiangolo.com), [PostgreSQL](https://www.postgresql.org/docs), [Docker](https://docs.docker.com), [Coverage](https://coverage.readthedocs.io/en/6.5.0/), [SQLAlchemy](https://docs.sqlalchemy.org/en/14/), [Pytest](https://docs.pytest.org/en/7.2.x/), [Black](https://black.readthedocs.io/en/stable/), [Flake8](https://flake8.pycqa.org/en/latest/), [Isort](https://pycqa.github.io/isort/),
 and [Poetry](https://python-poetry.org/docs).
 
 ## Features
-
-#### Developer experience
 
 - 🐍 [Python 3.10](https://docs.python.org/3/) for programming language
 - 🚀 [FastAPI](https://fastapi.tiangolo.com) for handling HTTP requests and responses
@@ -27,14 +19,6 @@ and [Poetry](https://python-poetry.org/docs).
 - 🚧 [Flake8](https://flake8.pycqa.org/en/latest/) for linting
 - 🎨 [Black](https://black.readthedocs.io/en/stable/) for code formatting
 - 📚 [Isort](https://pycqa.github.io/isort/) for sorting imports
-
-#### Back-end app features
-
-- 🚫 JWT authentication for secure access to the API
-- 🎢 Layered architecture. (Controller, Service, Repository, Model)
-- 📦 Dependency injection for better code organization
-- 📝 Swagger and Redoc for API documentation and testing
-- ♻️ Schema validation for input and output data
 
 ## Requirements
 
@@ -98,3 +82,20 @@ $ docker-compose exec app poetry run black .
 # Run isort
 $ docker-compose exec app poetry run isort .
 ```
+
+## API Docs
+
+Visit http://localhost:8000/docs or http://localhost:8000/redoc for API docs
+
+### Add shipping rates
+
+In this link http://localhost:8000/docs#/data/data_init_api_v1_data_init_post
+You can upload the rates.json (example in root of repo) file and it will be added to the database.
+
+### Drop shipping rates
+
+You may also want to clear all data to load new ones. In this link you can flush the shipping rates: http://localhost:8000/docs#/data/data_flush_api_v1_data_flush_get
+
+### View PostgreSQL with PgAdmin
+
+You can also see your scheme from PgAdmin: http://localhost:5050, in the .env file there is all the information to configure the connection.
